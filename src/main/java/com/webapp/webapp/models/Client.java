@@ -4,13 +4,20 @@
  */
 package com.webapp.webapp.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.sql.Date;
+import java.util.List;
 
 /**
  *
@@ -32,6 +39,23 @@ public class Client {
     
     private String phone;
     private String address;
+    
+    // RELACIONES
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
+    
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
+    private ClientProfile profile;
+    
+    @ManyToMany
+    @JoinTable(
+        name = "client_services",
+        joinColumns = @JoinColumn(name = "client_id"),
+        inverseJoinColumns = @JoinColumn(name = "service_id")
+    )
+    private List<Service> services;
+    
     private String status; //New, Permanent, Lead, Occasional, Inactive
     private Date createdAt;
 
@@ -99,7 +123,30 @@ public class Client {
         this.createdAt = createdAt;
     }
 
-   
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public ClientProfile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(ClientProfile profile) {
+        this.profile = profile;
+    }
+
+    public List getServices() {
+        return services;
+    }
+
+    public void setServices(List services) {
+        this.services = services;
+    }
+    
     
     
 }

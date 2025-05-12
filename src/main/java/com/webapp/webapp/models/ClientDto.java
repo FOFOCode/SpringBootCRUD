@@ -6,6 +6,7 @@ package com.webapp.webapp.models;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 /**
  *
@@ -28,6 +29,9 @@ public class ClientDto {
     
     @NotEmpty(message = "The status is required")
     private String status;
+    
+    @NotNull(message = "The Department is required")
+    private Integer departmentId; // nuevo campo agregado
 
     public String getFirstName() {
         return firstName;
@@ -75,6 +79,14 @@ public class ClientDto {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Integer getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
     }
 
     

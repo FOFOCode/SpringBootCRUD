@@ -7,10 +7,12 @@ package com.webapp.webapp.controllers;
 
 import com.webapp.webapp.models.Client;
 import com.webapp.webapp.models.ClientDto;
+import com.webapp.webapp.models.Department;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.webapp.webapp.repositories.ClientRepository;
+import com.webapp.webapp.repositories.DepartmentRepository;
 import jakarta.validation.Valid;
 import java.sql.Date;
 import org.springframework.data.domain.Sort;
@@ -28,6 +30,7 @@ import org.springframework.validation.FieldError;
 public class ClientsController {
     @Autowired
     private ClientRepository clientRepo;
+    private DepartmentRepository departmentRepo;
     
     @GetMapping({"","/"})
     public String getClients(Model model){
@@ -41,7 +44,8 @@ public class ClientsController {
     public String createClient(Model model){
         ClientDto clientDto = new ClientDto();
         model.addAttribute("clientDto", clientDto);
-        
+        model.addAttribute("departments", departmentRepo.findAll()); // Para el select
+
         return "clients/create";
     }
     
@@ -65,6 +69,11 @@ public class ClientsController {
         client.setStatus(clientDto.getStatus());
         client.setCreatedAt(new Date(System.currentTimeMillis()));
         
+        
+        // Buscar departamento por ID
+        Department department = departmentRepo.findById(clientDto.getDepartmentId()).orElse(null);
+        client.setDepartment(department);
+        
         clientRepo.save(client);
         
         return "redirect:/clients";
@@ -84,9 +93,11 @@ public class ClientsController {
         clientDto.setPhone(client.getPhone());
         clientDto.setAddress(client.getAddress());
         clientDto.setStatus(client.getStatus());
-        
+        clientDto.setDepartmentId(client.getDepartment().getId()); // Nuevo
+
         model.addAttribute("client", client);
         model.addAttribute("clientDto", clientDto);
+        model.addAttribute("departments", departmentRepo.findAll()); // Para el select
         
         return "clients/edit";
     }
@@ -113,11 +124,14 @@ public class ClientsController {
         client.setAddress(clientDto.getAddress());
         client.setStatus(clientDto.getStatus());
         
-        try{
-            //Podria dar una excepcion si el email esta duplicado debe de estar en unique en la bd
+        // Asignar departamento actualizado
+        Department department = departmentRepo.findById(clientDto.getDepartmentId()).orElse(null);
+        client.setDepartment(department);
+        
+        try {
             clientRepo.save(client);
-        }catch(Exception ex){
-            result.addError(new FieldError("clientDto", "email", clientDto.getEmail(), false,null,null, "Emai; address is already used"));
+        } catch(Exception ex){
+            result.addError(new FieldError("clientDto", "email", clientDto.getEmail(), false,null,null, "Email address is already used"));
             return "clients/edit";
         }
         

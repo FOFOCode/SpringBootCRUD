@@ -21,6 +21,7 @@
                       <th>Phone</th>
                       <th>Address</th>
                       <th>Status</th>
+                      <th>Department</th> <!-- Nuevo -->
                       <th>Created At</th>
                       <th>Action</th>
                   </tr>
@@ -33,6 +34,7 @@
                       <td th:text="${client.phone}"></td>
                       <td th:text="${client.address}"></td>
                       <td th:text="${client.status}"></td>
+                      <td th:text="${client.department.name}"></td> <!-- Nuevo -->
                       <td th:text="${client.createdAt}"></td>
                       
                       <td style="white-space: nowrap">

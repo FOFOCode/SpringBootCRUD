@@ -9,12 +9,25 @@
   <body>
     
       <div class="container my-3">
-          <h1 class="text-center mb-3">Welcome to our website</h1>
+          <h1 class="text-center mb-3">List of departments</h1>
           
-          <a class="btn btn-primary" href="/clients">Clients</a>
-          <a class="btn btn-primary" href="/department">Department</a>
+          <table class="table">
+              <thead>
+                  <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Clients</th>
 
-          
+                  </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                  <tr th:each="department : ${departments}">
+                      <td th:text="${department.id}"></td>
+                      <td th:text="${department.name}"></td>
+                      <td th:text="${department.clients}"></td>
+                  </tr>    
+              </tbody>
+          </table>
       </div>
       
       
@@ -22,3 +35,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
   </body>
 </html>
+
