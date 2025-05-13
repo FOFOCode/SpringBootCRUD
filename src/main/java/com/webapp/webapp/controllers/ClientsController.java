@@ -26,21 +26,22 @@ import org.springframework.validation.FieldError;
  */
 
 @Controller
-@RequestMapping("/clients")
+@RequestMapping("/clients") // localhost:8080/clients/mapping
 public class ClientsController {
     @Autowired
     private ClientRepository clientRepo;
+    @Autowired
     private DepartmentRepository departmentRepo;
     
-    @GetMapping({"","/"})
+    @GetMapping({"","/"}) // localhost:8080/clients/
     public String getClients(Model model){
-        var clients = clientRepo.findAll(Sort.by(Sort.Direction.DESC,"id"));
+        var clients = clientRepo.findAll(Sort.by(Sort.Direction.DESC,"id")); //select * from client
         model.addAttribute("clients", clients);
         
-        return "clients/index";
+        return "clients/index"; // Templates/clients/index
     }
     
-    @GetMapping("/create")
+    @GetMapping("/create") 
     public String createClient(Model model){
         ClientDto clientDto = new ClientDto();
         model.addAttribute("clientDto", clientDto);
@@ -49,7 +50,7 @@ public class ClientsController {
         return "clients/create";
     }
     
-    @PostMapping("/create")
+    @PostMapping("/create") //luego de
     public String createClient(@Valid @ModelAttribute ClientDto clientDto, BindingResult result){
         
         if(clientRepo.findByEmail(clientDto.getEmail())!= null){
@@ -99,10 +100,10 @@ public class ClientsController {
         model.addAttribute("clientDto", clientDto);
         model.addAttribute("departments", departmentRepo.findAll()); // Para el select
         
-        return "clients/edit";
+        return "clients/edit"; // Templates/clients/edit
     }
     
-    @PostMapping("/edit")
+    @PostMapping("/edit") // luego de
     public String editClient(Model model, @RequestParam int id, @Valid @ModelAttribute ClientDto clientDto, BindingResult result){
         
         Client client = clientRepo.findById(id).orElse(null);

@@ -14,5 +14,7 @@ import com.webapp.webapp.models.Client;
  */
 public interface ClientRepository extends JpaRepository<Client, Integer> {
     
+    //Metodos personalizados
     public Client findByEmail(String email);
+    
 }

@@ -42,19 +42,10 @@ public class Client {
     
     // RELACIONES
     @ManyToOne
-    @JoinColumn(name = "department_id")
+    @JoinColumn(name = "department_id") //foraneo
     private Department department;
     
-    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
-    private ClientProfile profile;
-    
-    @ManyToMany
-    @JoinTable(
-        name = "client_services",
-        joinColumns = @JoinColumn(name = "client_id"),
-        inverseJoinColumns = @JoinColumn(name = "service_id")
-    )
-    private List<Service> services;
+
     
     private String status; //New, Permanent, Lead, Occasional, Inactive
     private Date createdAt;
